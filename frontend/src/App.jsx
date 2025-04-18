@@ -56,9 +56,57 @@ function App() {
             <div className="section">
               <div className="sectionheaderm">Projects</div>
               <div className="project">
-                <div className="subsectionheader">TIC - TAC - TOE</div>
-                <div className="tag" style={{ width: "30%" }}>
-                  REACT APP
+                <div className="subsectionheader">Project</div>
+                <div className="tag" style={{ width: "20%" }}>
+                  Field
+                </div>
+                <div className="para">
+                  <div className="bulletin">
+                    <div className="bullet"></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+              <div className="project">
+                <div className="subsectionheader">Project</div>
+                <div className="tag" style={{ width: "20%" }}>
+                  Field
+                </div>
+                <div className="para">
+                  <div className="bulletin">
+                    <div className="bullet"></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+              <div className="project">
+                <div className="subsectionheader">Project</div>
+                <div className="tag" style={{ width: "20%" }}>
+                  Field
+                </div>
+                <div className="para">
+                  <div className="bulletin">
+                    <div className="bullet"></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+              <div className="project">
+                <div className="subsectionheader">Project</div>
+                <div className="tag" style={{ width: "20%" }}>
+                  Field
+                </div>
+                <div className="para">
+                  <div className="bulletin">
+                    <div className="bullet"></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+              <div className="project">
+                <div className="subsectionheader">Project</div>
+                <div className="tag" style={{ width: "20%" }}>
+                  Field
                 </div>
                 <div className="para">
                   <div className="bulletin">
@@ -95,13 +143,7 @@ function App() {
                       className="img"
                     />
                   </div>
-                  <div
-                    style={{
-                      letterSpacing: "normal",
-                      overflow: "hidden",
-                    }}>
-                    adnanyhamid786@gmail.com
-                  </div>
+                  <div className="mailtext">adnanyhamid786@gmail.com</div>
                   <Copy
                     text="adnanyhamid786@gmail.com"
                     copyIcon="/copy.png"
@@ -135,7 +177,7 @@ function App() {
                   </div>
                   <Link link={"https://github.com/AdnanHamid175"} />
 
-                  <div>AdnanHamid175</div>
+                  <div className="ellipsisText">github.com/AdnanHamid175</div>
                   <Copy
                     text="https://github.com/AdnanHamid175"
                     copyIcon="/copy.png"
@@ -154,7 +196,9 @@ function App() {
                     link={"https://www.linkedin.com/in/adnan-hamid-73b073325/"}
                   />
 
-                  <div>AdnanHamid175</div>
+                  <div className="ellipsisText">
+                    www.linkedin.com/in/adnan-hamid-73b073325
+                  </div>
                   <Copy
                     text="https://www.linkedin.com/in/adnan-hamid-73b073325/"
                     copyIcon="/copy.png"

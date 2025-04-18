@@ -13,6 +13,21 @@
       width: 0 ;
       overflow: hidden ;
       position: absolute ;
+      
+    }
+    .ellipsisText {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      max-width: none;
+    }
+    .mailtext {
+      letter-spacing: 5px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      max-width: none;
+
     }
   }
 
@@ -215,7 +230,7 @@
 .tag{
     aspect-ratio: 5 / 1;
     font-family: 'Comfortaa', cursive;
-    font-size: small;
+    font-size: smaller;
     color: rgba(132,130,133,255);
     background: rgba(244,240,239,255);
     justify-content: center;
@@ -226,7 +241,7 @@
     border-radius: 9999px;
     letter-spacing: 2px;
     margin-bottom: 20px;
-    opacity: 75%;
+    opacity: 80%;
 }
 
 .para{
@@ -308,4 +323,17 @@
   font-weight: bold;
   opacity: 75%;
   margin-left: 3px;
+}
+
+.ellipsisText{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.mailtext{
+  letter-spacing: normal;
+  overflow: hidden;
+  text-overflow: clip;
 }
