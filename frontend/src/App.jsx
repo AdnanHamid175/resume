@@ -20,11 +20,25 @@ function App() {
         <div className="content">
           <div className="main">
             <div className="section">
-              <div className="sectionheaderm">Profile</div>
+              <div className="bulletin">
+                <div className="sectionheaderm">Profile</div>
+                <div className="sectionicon">
+                  <img
+                    src="../public/profile.png"
+                    alt="profile"
+                    className="img"
+                  />
+                </div>
+              </div>
               <div className="para"></div>
             </div>
             <div className="section">
-              <div className="sectionheaderm">Skills</div>
+              <div className="bulletin">
+                <div className="sectionheaderm">Skills</div>
+                <div className="sectionicon">
+                  <img src="../public/skill.png" alt="skill" className="img" />
+                </div>
+              </div>
               <div className="skill">
                 <div className="subsectionheader">LANGUAGES</div>
                 <div className="para">
@@ -54,7 +68,16 @@ function App() {
               </div>
             </div>
             <div className="section">
-              <div className="sectionheaderm">Projects</div>
+              <div className="bulletin">
+                <div className="sectionheaderm">Projects</div>
+                <div className="sectionicon">
+                  <img
+                    src="../public/project.png"
+                    alt="project"
+                    className="img"
+                  />
+                </div>
+              </div>
               <div className="project">
                 <div className="subsectionheader">Project</div>
                 <div className="tag" style={{ width: "20%" }}>
@@ -208,7 +231,16 @@ function App() {
               </div>
             </div>
             <div className="section">
-              <div className="sectionheadersb">Education</div>
+              <div className="bulletin">
+                <div className="sectionheadersb">Education</div>
+                <div className="sectionicon">
+                  <img
+                    src="../public/education.png"
+                    alt="education"
+                    className="img"
+                  />
+                </div>
+              </div>
               <div className="education">
                 <div className="subsectionheader">
                   MSBHSC 12th - <div className="status">Pursuing</div>
@@ -233,7 +265,16 @@ function App() {
               </div>
             </div>
             <div className="section">
-              <div className="sectionheadersb">Interests</div>
+              <div className="bulletin">
+                <div className="sectionheadersb">Interests</div>
+                <div className="sectionicon">
+                  <img
+                    src="../public/interest.png"
+                    alt="interest"
+                    className="img"
+                  />
+                </div>
+              </div>
               <div>
                 <div className="bulletin">
                   <div className="interest">
@@ -266,7 +307,12 @@ function App() {
               </div>
             </div>
             <div className="section">
-              <div className="sectionheadersb">Awards</div>
+              <div className="bulletin">
+                <div className="sectionheadersb">Awards</div>
+                <div className="sectionicon">
+                  <img src="../public/award.png" alt="award" className="img" />
+                </div>
+              </div>
               <div className="subsectionheader"></div>
               <div className="para"></div>
             </div>
