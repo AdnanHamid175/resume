@@ -24,7 +24,8 @@
   "homepage": "https://github.com/AdnanHamid175/resume#readme",
   "dependencies": {
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.13.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

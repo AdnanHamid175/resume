@@ -42,28 +42,25 @@ function App() {
               <div className="skill">
                 <div className="subsectionheader">LANGUAGES</div>
                 <div className="para">
-                  <div className="bulletin">
-                    <div className="bullet"></div>
-                    <div></div>
-                  </div>
+                  <div className="language"></div>
                 </div>
               </div>
               <div className="skill">
                 <div className="subsectionheader">FRAMEWORKS</div>
                 <div className="para">
-                  <div className="bulletin">
-                    <div className="bullet"></div>
-                    <div></div>
-                  </div>
+                  <div className="framework"></div>
+                </div>
+              </div>
+              <div className="skill">
+                <div className="subsectionheader">DATABASE</div>
+                <div className="para">
+                  <div className="framework"></div>
                 </div>
               </div>
               <div className="skill">
                 <div className="subsectionheader">SOFTWARE</div>
                 <div className="para">
-                  <div className="bulletin">
-                    <div className="bullet"></div>
-                    <div></div>
-                  </div>
+                  <div className="language"></div>
                 </div>
               </div>
             </div>
@@ -79,63 +76,99 @@ function App() {
                 </div>
               </div>
               <div className="project">
-                <div className="subsectionheader">Project</div>
+                <div className="subsectionheader">PROJECT</div>
                 <div className="tag" style={{ width: "20%" }}>
                   Field
                 </div>
-                <div className="para">
-                  <div className="bulletin">
-                    <div className="bullet"></div>
-                    <div></div>
+                <div className="para"></div>
+                <div className="bulletin">
+                  <div className="proicon">
+                    <img
+                      src="../public/github.png"
+                      alt="github"
+                      className="img"
+                      onClick={() =>
+                        window.open(
+                          "https://github.com/AdnanHamid175",
+                          "_blank"
+                        )
+                      }
+                    />
                   </div>
+                  <div className="protxt">github.com/AdnanHamid175</div>
+                  <div className="proicon">
+                    <img
+                      src="../public/wlink.png"
+                      alt="resume"
+                      className="img"
+                      onClick={() => window.open("www.example.com", "_blank")}
+                    />
+                  </div>{" "}
+                  <div className="protxt">www.example.com</div>
                 </div>
               </div>
               <div className="project">
-                <div className="subsectionheader">Project</div>
+                <div className="subsectionheader">PROJECT</div>
                 <div className="tag" style={{ width: "20%" }}>
                   Field
                 </div>
-                <div className="para">
-                  <div className="bulletin">
-                    <div className="bullet"></div>
-                    <div></div>
+                <div className="para"></div>
+                <div className="bulletin">
+                  <div className="proicon">
+                    <img
+                      src="../public/github.png"
+                      alt="github"
+                      className="img"
+                      onClick={() =>
+                        window.open(
+                          "https://github.com/AdnanHamid175",
+                          "_blank"
+                        )
+                      }
+                    />
                   </div>
+                  <div className="protxt">github.com/AdnanHamid175</div>
+                  <div className="proicon">
+                    <img
+                      src="../public/wlink.png"
+                      alt="resume"
+                      className="img"
+                      onClick={() => window.open("www.example.com", "_blank")}
+                    />
+                  </div>{" "}
+                  <div className="protxt">www.example.com</div>
                 </div>
               </div>
               <div className="project">
-                <div className="subsectionheader">Project</div>
+                <div className="subsectionheader">PROJECT</div>
                 <div className="tag" style={{ width: "20%" }}>
                   Field
                 </div>
-                <div className="para">
-                  <div className="bulletin">
-                    <div className="bullet"></div>
-                    <div></div>
+                <div className="para"></div>
+                <div className="bulletin">
+                  <div className="proicon">
+                    <img
+                      src="../public/github.png"
+                      alt="github"
+                      className="img"
+                      onClick={() =>
+                        window.open(
+                          "https://github.com/AdnanHamid175",
+                          "_blank"
+                        )
+                      }
+                    />
                   </div>
-                </div>
-              </div>
-              <div className="project">
-                <div className="subsectionheader">Project</div>
-                <div className="tag" style={{ width: "20%" }}>
-                  Field
-                </div>
-                <div className="para">
-                  <div className="bulletin">
-                    <div className="bullet"></div>
-                    <div></div>
-                  </div>
-                </div>
-              </div>
-              <div className="project">
-                <div className="subsectionheader">Project</div>
-                <div className="tag" style={{ width: "20%" }}>
-                  Field
-                </div>
-                <div className="para">
-                  <div className="bulletin">
-                    <div className="bullet"></div>
-                    <div></div>
-                  </div>
+                  <div className="protxt">github.com/AdnanHamid175</div>
+                  <div className="proicon">
+                    <img
+                      src="../public/wlink.png"
+                      alt="resume"
+                      className="img"
+                      onClick={() => window.open("www.example.com", "_blank")}
+                    />
+                  </div>{" "}
+                  <div className="protxt">www.example.com</div>
                 </div>
               </div>
             </div>
