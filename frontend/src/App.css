@@ -430,8 +430,18 @@
   font-weight: 100;
 }
 
-/*----------------------------------------------------------------------------*/
+.parallax {
+  position: fixed;
+  top: 20px; /* adjust as you want */
+  right: 100px; /* adjust as you want */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
 
+/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 .bodyy {
     width: 8.27in;
@@ -606,6 +616,22 @@
     margin-bottom: 15px;
     margin-left: 5px;
   }
+
+.editiconn{
+    width: 27.5px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: rgba(229,221,212,255);
+    border: 4px solid rgba(229,221,212,255);
+    cursor: pointer;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 70px;
+    flex-shrink: 0;
+    margin-bottom: 15px;
+    margin-left: auto;
+  }
   
 .bulletinn{
     display: flex;
@@ -638,6 +664,7 @@
     margin-bottom: 10px;
     margin-left: 20px;
     cursor: pointer;
+    display: none;
   }
   
   .protxtt{
@@ -660,3 +687,35 @@
     flex-shrink: 0;
     cursor: pointer;
   }
+
+.cancel{
+  width: 27.5px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: rgba(229,221,212,255);
+  border: 4px solid rgba(229,221,212,255);
+  display : flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+  margin-bottom: 15px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.done{
+  width: 27.5px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: rgba(229,221,212,255);
+  border: 4px solid rgba(229,221,212,255);
+  cursor: pointer;
+  display : flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+  margin-bottom: 15px;
+  margin-left: 5px;
+}

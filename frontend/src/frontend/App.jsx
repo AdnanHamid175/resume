@@ -390,9 +390,19 @@ function App() {
           </div>
         </div>
       </div>
-      <button className="print noprint" onClick={() => window.print()}>
-        <img src="../public/print.png" alt="print" className="img" />
-      </button>
+      <div className="parallax">
+        <button className="print noprint" onClick={() => window.print()}>
+          <img src="../public/print.png" alt="print" className="img" />
+        </button>
+        <button
+          className="print noprint"
+          style={{ marginTop: "10px" }}
+          onClick={() =>
+            (window.location.href = "http://localhost:5173/Admin")
+          }>
+          <img src="../public/update.png" alt="update" className="img" />
+        </button>
+      </div>
     </div>
   );
 }
