@@ -1,9 +1,33 @@
-import React from "react";
-import "./App.css";
+import React, { useEffect, useState } from "react";
+import "../App.css";
 import Copy from "./components/Copy";
 import Link from "./components/Link";
 
 function App() {
+  const [profileData, setProfileData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/profile");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setProfileData(data);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
   return (
     <div className="App">
       <div className="body">
@@ -30,7 +54,21 @@ function App() {
                   />
                 </div>
               </div>
-              <div className="para"></div>
+              <div className="para">
+                {loading ? (
+                  <div>Loading...</div>
+                ) : error ? (
+                  <div>Error: {error}</div>
+                ) : profileData.length > 0 ? (
+                  profileData.map((profile) => (
+                    <div key={profile._id}>
+                      <p>{profile.data}</p>
+                    </div>
+                  ))
+                ) : (
+                  <div>No profile data</div>
+                )}
+              </div>
             </div>
             <div className="section">
               <div className="bulletin">

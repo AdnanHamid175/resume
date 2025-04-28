@@ -212,4 +212,23 @@
     cursor: pointer;
   }
   
-  
+  .protxt{
+    opacity: 75%;
+    margin-right: 10px;
+    font-weight: 100;
+  }
+
+  .proicon{
+    width: 12.5px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: rgba(117,116,147,255);
+    border: 4px solid rgba(117,116,147,255);
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-right: 10px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }

@@ -1,8 +1,16 @@
-import mongoose from "mongoose";
+import { connect } from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
-});
+const connectDB = async () => {
+  try {
+    const conn = await connect(process.env.MONGO_URI, {
+      useUnifiedTopology: true,
+    });
 
-export default mongoose.model("User", userSchema);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    process.exit();
+  }
+};
+
+export default connectDB;
