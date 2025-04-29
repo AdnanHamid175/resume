@@ -65,7 +65,7 @@
     max-width: 8.27in;
     max-height: 11.69in;
     border-collapse: collapse;
-    overflow: hidden;
+    /* overflow: hidden; */
     font-family: sans-serif;
     margin: 0;    
     padding: 0;
@@ -171,13 +171,11 @@
 }
 
 .sectionheaderm{
-  padding: 8px 16px;
   font-family: 'Noto Sans', sans-serif;
     font-size: larger;
     color: rgba(15,17,14,255);
     justify-content: center;
     align-items: center;
-    display: flex;
     border: 1px solid rgba(60,62,64,255);
     border-radius: 9999px;
     font-weight: bold;
@@ -186,18 +184,19 @@
     letter-spacing: 2px;
     border-bottom: 2px solid rgba(60,62,64,255);
     border-top: 2px solid rgba(60,62,64,255);
-    
+    text-transform: capitalize;
+    display: inline-flex; 
+    padding: 8px 16px; 
+    white-space: nowrap;
 }
 
 .sectionheadersb{
-  padding: 8px 16px;
   font-family: 'Noto Sans', sans-serif;
     font-size: larger;
     color: rgba(15,17,14,255);
     justify-content: center;
     align-items: center;
     text-align: center;
-    display: flex;
     border: 1px solid rgba(60,62,64,255);
     border-radius: 9999px;
     font-weight: bold;
@@ -206,6 +205,10 @@
     letter-spacing: 2px;
     border-bottom: 2px solid rgba(60,62,64,255);
     border-top: 2px solid rgba(60,62,64,255);
+    text-transform: capitalize;
+    display: inline-flex; 
+    padding: 8px 16px; 
+    white-space: nowrap;
 }
 
 .subsectionheader{
@@ -217,11 +220,13 @@
     border-radius: 9999px;
     letter-spacing: 1px;
     padding-left: 10px;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
-    display: flex;
+    text-transform: uppercase;
+    display: inline-flex; 
+    padding: 8px 16px; 
+    white-space: nowrap;
 }
 
 .tag{
@@ -233,12 +238,15 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    display: flex;
     font-weight: bold;
     border-radius: 9999px;
     letter-spacing: 2px;
     margin-bottom: 20px;
     opacity: 80%;
+    text-transform: capitalize;
+    display: inline-flex; 
+    padding: 8px 16px; 
+    white-space: nowrap;
 }
 
 .para{
@@ -532,13 +540,11 @@
 
 .sectionheaderr{
     max-width: fit-content;
-    padding: 8px 16px;
     font-family: 'Noto Sans', sans-serif;
     color: rgba(15,17,14,255);
     justify-content: center;
     align-items: center;
     text-align: center;
-    display: flex;
     border: 1px solid rgba(60,62,64,255);
     border-radius: 9999px;
     font-weight: bold;
@@ -548,6 +554,10 @@
     border-bottom: 2px solid rgba(60,62,64,255);
     border-top: 2px solid rgba(60,62,64,255);
     font-size: larger;
+    display: inline-flex; 
+    padding: 8px 16px; 
+    white-space: nowrap;
+    text-transform: capitalize;
   }
 
   .subsectionheaderr{
@@ -557,16 +567,20 @@
     color: rgba(43,43,41,255);
     margin-bottom: 10px;
     border-radius: 9999px;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     padding-left: 10px;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
-    display: flex;
+    word-spacing: 2.5px;
+    text-transform: uppercase;
+    display: inline-flex; 
+    padding: 8px 16px; 
+    white-space: nowrap;
 }
 
 .tagg{
+    width: fit-content;
     aspect-ratio: 5 / 1;
     font-family: 'Comfortaa', cursive;
     font-size: smaller;
@@ -575,12 +589,15 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    display: flex;
     font-weight: bold;
     border-radius: 9999px;
     letter-spacing: 2px;
     margin-bottom: 20px;
     opacity: 80%;
+    text-transform: capitalize;
+    display: inline-flex; 
+    padding: 8px 16px; 
+    white-space: nowrap;
 }
 
 .paraa{

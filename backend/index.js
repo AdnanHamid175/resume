@@ -32,7 +32,7 @@ app.get("/profile", async (req, res) => {
     res.status(200).json(profiles);
   } else {
     res.status(404);
-    throw new Error("Profiles not found");
+    throw new Error("Error");
   }
 });
 
@@ -62,14 +62,9 @@ app.post("/save-profile", async (req, res) => {
         { new: true }
       );
 
-      if (updatedProfile) {
-        res.status(200).json({
-          _id: updatedProfile._id,
-          name: updatedProfile.name,
-          type: updatedProfile.type,
-          data: updatedProfile.data,
-        });
-      } else {
+      if (!updatedProfile) {
+        console.log("profile => ", profile);
+
         res.status(400);
         throw new Error("Profile not updated");
       }
@@ -81,24 +76,20 @@ app.post("/save-profile", async (req, res) => {
         data: content,
       });
 
-      if (profile) {
-        res.status(201).json({
-          _id: profile._id,
-          name: profile.name,
-          type: profile.type,
-          data: profile.data,
-        });
-      } else {
+      if (!profile) {
+        console.log("profile => ", profile);
+
         res.status(400);
         throw new Error("Profile not created");
       }
     }
   }
+
+  res.status(200).json({ message: "Profile saved successfully" });
 });
 
 app.use(notFound);
 app.use(errorHandler);
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

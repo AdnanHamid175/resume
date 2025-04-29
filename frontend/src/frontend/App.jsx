@@ -28,6 +28,15 @@ function App() {
     fetchProfileData();
   }, []);
 
+  const getProfileRow = (name) => {
+    const element = profileData.find((item) => item.name === name);
+    if (element) {
+      return element;
+    } else {
+      return null;
+    }
+  };
+
   return (
     <div className="App">
       <div className="body">
@@ -54,21 +63,7 @@ function App() {
                   />
                 </div>
               </div>
-              <div className="para">
-                {loading ? (
-                  <div>Loading...</div>
-                ) : error ? (
-                  <div>Error: {error}</div>
-                ) : profileData.length > 0 ? (
-                  profileData.map((profile) => (
-                    <div key={profile._id}>
-                      <p>{profile.data}</p>
-                    </div>
-                  ))
-                ) : (
-                  <div>No profile data</div>
-                )}
-              </div>
+              <div className="para">{getProfileRow("profile")?.data}</div>
             </div>
             <div className="section">
               <div className="bulletin">
@@ -114,11 +109,16 @@ function App() {
                 </div>
               </div>
               <div className="project">
-                <div className="subsectionheader">PROJECT</div>
-                <div className="tag" style={{ width: "20%" }}>
-                  Field
+                <div className="subsectionheader">
+                  {" "}
+                  {getProfileRow("project1Title")?.data}
                 </div>
-                <div className="para"></div>
+                <div className="tag" style={{ width: "20%" }}>
+                  {getProfileRow("project1Field")?.data}
+                </div>
+                <div className="para">
+                  {getProfileRow("project1Description")?.data}
+                </div>
                 <div className="bulletin">
                   <div className="proicon">
                     <img
@@ -133,7 +133,10 @@ function App() {
                       }
                     />
                   </div>
-                  <div className="protxt">github.com/AdnanHamid175</div>
+                  <div className="protxt">
+                    {" "}
+                    {getProfileRow("project1Github")?.data}
+                  </div>
                   <div className="proicon">
                     <img
                       src="../public/wlink.png"
@@ -142,15 +145,23 @@ function App() {
                       onClick={() => window.open("www.example.com", "_blank")}
                     />
                   </div>{" "}
-                  <div className="protxt">www.example.com</div>
+                  <div className="protxt">
+                    {" "}
+                    {getProfileRow("project1Website")?.data}
+                  </div>
                 </div>
               </div>
               <div className="project">
-                <div className="subsectionheader">PROJECT</div>
-                <div className="tag" style={{ width: "20%" }}>
-                  Field
+                <div className="subsectionheader">
+                  {" "}
+                  {getProfileRow("project2Title")?.data}
                 </div>
-                <div className="para"></div>
+                <div className="tag" style={{ width: "20%" }}>
+                  {getProfileRow("project2Field")?.data}
+                </div>
+                <div className="para">
+                  {getProfileRow("project2Description")?.data}
+                </div>
                 <div className="bulletin">
                   <div className="proicon">
                     <img
@@ -165,7 +176,10 @@ function App() {
                       }
                     />
                   </div>
-                  <div className="protxt">github.com/AdnanHamid175</div>
+                  <div className="protxt">
+                    {" "}
+                    {getProfileRow("project2Github")?.data}
+                  </div>
                   <div className="proicon">
                     <img
                       src="../public/wlink.png"
@@ -174,15 +188,23 @@ function App() {
                       onClick={() => window.open("www.example.com", "_blank")}
                     />
                   </div>{" "}
-                  <div className="protxt">www.example.com</div>
+                  <div className="protxt">
+                    {" "}
+                    {getProfileRow("project2Website")?.data}
+                  </div>
                 </div>
               </div>
               <div className="project">
-                <div className="subsectionheader">PROJECT</div>
-                <div className="tag" style={{ width: "20%" }}>
-                  Field
+                <div className="subsectionheader">
+                  {" "}
+                  {getProfileRow("project3Title")?.data}
                 </div>
-                <div className="para"></div>
+                <div className="tag" style={{ width: "20%" }}>
+                  {getProfileRow("project3Field")?.data}
+                </div>
+                <div className="para">
+                  {getProfileRow("project3Description")?.data}
+                </div>
                 <div className="bulletin">
                   <div className="proicon">
                     <img
@@ -197,7 +219,10 @@ function App() {
                       }
                     />
                   </div>
-                  <div className="protxt">github.com/AdnanHamid175</div>
+                  <div className="protxt">
+                    {" "}
+                    {getProfileRow("project3Github")?.data}
+                  </div>
                   <div className="proicon">
                     <img
                       src="../public/wlink.png"
@@ -206,7 +231,10 @@ function App() {
                       onClick={() => window.open("www.example.com", "_blank")}
                     />
                   </div>{" "}
-                  <div className="protxt">www.example.com</div>
+                  <div className="protxt">
+                    {" "}
+                    {getProfileRow("project3Website")?.data}
+                  </div>
                 </div>
               </div>
             </div>

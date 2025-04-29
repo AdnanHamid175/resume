@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
 
 function Admin() {
@@ -7,6 +7,28 @@ function Admin() {
     json: "json",
   };
   const [state, setState] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/profile");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setState(data);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
 
   const handleChange = (e, type) => {
     // store value as object with unique name in state array
@@ -40,6 +62,15 @@ function Admin() {
       .catch((error) => {
         console.error("Error:", error);
       });
+  };
+
+  const getProfileRow = (name) => {
+    const element = state.find((item) => item.name === name);
+    if (element) {
+      return element;
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -80,6 +111,7 @@ function Admin() {
               style={{ padding: "10px" }}
               name="profile"
               onChange={(e) => handleChange(e, types.text)}
+              value={getProfileRow("profile")?.data}
             />
           </div>
           <div className="sectionn">
@@ -156,15 +188,32 @@ function Admin() {
               </div>
             </div>
             <div className="projectt">
-              <div className="subsectionheaderr">PROJECT</div>
+              <div className="subsectionheaderr">
+                <input
+                  type="text"
+                  style={{ all: "unset" }}
+                  name="project1Title"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project1Title")?.data}
+                />
+              </div>
               <div className="tagg" style={{ width: "20%" }}>
-                Field
+                <input
+                  type="text"
+                  style={{ all: "unset" }}
+                  name="project1Field"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project1Field")?.data}
+                />
               </div>
               <div className="paraa">
                 <textarea
                   type="text"
                   className="paraa"
                   style={{ padding: "10px", marginBottom: "10px" }}
+                  name="project1Description"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project1Description")?.data}
                 />
               </div>
               <div className="bulletinn">
@@ -178,7 +227,16 @@ function Admin() {
                     }
                   />
                 </div>
-                <div className="protxtt">github.com/AdnanHamid175</div>
+                <div className="protxtt">
+                  {" "}
+                  <input
+                    type="text"
+                    style={{ all: "unset" }}
+                    name="project1Github"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project1Github")?.data}
+                  />
+                </div>
                 <div className="proiconn">
                   <img
                     src="../../public/wlink.png"
@@ -187,19 +245,45 @@ function Admin() {
                     onClick={() => window.open("www.example.com", "_blank")}
                   />
                 </div>{" "}
-                <div className="protxtt">www.example.com</div>
+                <div className="protxtt">
+                  {" "}
+                  <input
+                    type="text"
+                    style={{ all: "unset" }}
+                    name="project1Website"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project1Website")?.data}
+                  />
+                </div>
               </div>
             </div>
             <div className="projectt">
-              <div className="subsectionheaderr">PROJECT</div>
+              <div className="subsectionheaderr">
+                <input
+                  type="text"
+                  style={{ all: "unset" }}
+                  name="project2Title"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project2Title")?.data}
+                />
+              </div>
               <div className="tagg" style={{ width: "20%" }}>
-                Field
+                <input
+                  type="text"
+                  style={{ all: "unset" }}
+                  name="project2Field"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project2Field")?.data}
+                />
               </div>
               <div className="paraa">
                 <textarea
                   type="text"
                   className="paraa"
                   style={{ padding: "10px", marginBottom: "10px" }}
+                  name="project2Description"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project2Description")?.data}
                 />
               </div>
               <div className="bulletinn">
@@ -213,7 +297,16 @@ function Admin() {
                     }
                   />
                 </div>
-                <div className="protxtt">github.com/AdnanHamid175</div>
+                <div className="protxtt">
+                  {" "}
+                  <input
+                    type="text"
+                    style={{ all: "unset" }}
+                    name="project2Github"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project2Github")?.data}
+                  />
+                </div>
                 <div className="proiconn">
                   <img
                     src="../../public/wlink.png"
@@ -222,22 +315,48 @@ function Admin() {
                     onClick={() => window.open("www.example.com", "_blank")}
                   />
                 </div>{" "}
-                <div className="protxtt">www.example.com</div>
+                <div className="protxtt">
+                  {" "}
+                  <input
+                    type="text"
+                    style={{ all: "unset" }}
+                    name="project2Website"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project2Website")?.data}
+                  />
+                </div>
               </div>
             </div>
             <div className="projectt">
-              <div className="subsectionheaderr">PROJECT</div>
+              <div className="subsectionheaderr">
+                <input
+                  type="text"
+                  style={{ all: "unset" }}
+                  name="project3Title"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project3Title")?.data}
+                />
+              </div>
               <div className="tagg" style={{ width: "20%" }}>
-                Field
+                <input
+                  type="text"
+                  style={{ all: "unset" }}
+                  name="project3Field"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project3Field")?.data}
+                />
               </div>
               <div className="paraa">
                 <textarea
                   type="text"
                   className="paraa"
                   style={{ padding: "10px", marginBottom: "10px" }}
+                  name="project3Description"
+                  onChange={(e) => handleChange(e, types.text)}
+                  value={getProfileRow("project3Description")?.data}
                 />
               </div>
-              <div className="bulletinn" style={{ paddingBottom: "20px" }}>
+              <div className="bulletinn">
                 <div className="proiconn">
                   <img
                     src="../../public/github.png"
@@ -248,7 +367,16 @@ function Admin() {
                     }
                   />
                 </div>
-                <div className="protxtt">github.com/AdnanHamid175</div>
+                <div className="protxtt">
+                  {" "}
+                  <input
+                    type="text"
+                    style={{ all: "unset" }}
+                    name="project3Github"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project3Github")?.data}
+                  />
+                </div>
                 <div className="proiconn">
                   <img
                     src="../../public/wlink.png"
@@ -257,7 +385,16 @@ function Admin() {
                     onClick={() => window.open("www.example.com", "_blank")}
                   />
                 </div>{" "}
-                <div className="protxtt">www.example.com</div>
+                <div className="protxtt">
+                  {" "}
+                  <input
+                    type="text"
+                    style={{ all: "unset" }}
+                    name="project3Website"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project3Website")?.data}
+                  />
+                </div>
               </div>
             </div>
           </div>
