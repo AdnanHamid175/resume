@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../App.css";
+import "./App.css";
 
 function Admin() {
   const types = {
@@ -9,6 +9,7 @@ function Admin() {
   const [state, setState] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [languages, setLanguages] = useState([]);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -73,6 +74,12 @@ function Admin() {
     }
   };
 
+  const handleAdd = async () => {
+    try {
+      setLanguages([...languages, ""]);
+    } catch (error) {}
+  };
+
   return (
     <div className="App">
       <div className="bodyy">
@@ -132,11 +139,29 @@ function Admin() {
               <div className="bulletinn">
                 <div className="subsectionheaderr">LANGUAGES</div>
                 <div className="iconn">
-                  <img src="../../public/add.png" alt="add" className="imgg" />
+                  <img
+                    src="../../public/add.png"
+                    alt="add"
+                    className="imgg"
+                    onClick={handleAdd}
+                  />
                 </div>
               </div>
               <div className="paraa">
-                <div></div>
+                {languages.map((lang, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    style={{ all: "unset" }}
+                    name={`language${index}`}
+                    value={lang}
+                    onChange={(e) => {
+                      const newLangs = [...languages];
+                      newLangs[index] = e.target.value;
+                      setLanguages(newLangs);
+                    }}
+                  />
+                ))}
               </div>
             </div>
             <div className="skilll">

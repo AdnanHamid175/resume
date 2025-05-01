@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../App.css";
+import "./App.css";
 import Copy from "./components/Copy";
 import Link from "./components/Link";
 

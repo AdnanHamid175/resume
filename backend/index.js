@@ -5,6 +5,7 @@ import connectDB from "./db.js";
 import cors from "cors";
 import { notFound, errorHandler } from "./middlewares/errorMiddleWare.js";
 import Profile from "./Models/profileModel.js";
+// import OpenAI from "openai";
 
 dotenv.config();
 
