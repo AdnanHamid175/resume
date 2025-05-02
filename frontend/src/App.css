@@ -276,68 +276,12 @@
   border-radius: 50%;
   background: rgba(42,42,40,255);
   margin-right: 5px;
+  flex-shrink: 0;
 }
 
 .skill{
   margin-bottom: 20px;
-}
-
-.language{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
- }
-
-.language > * {
-  position: relative;
-  padding-left: 14px;
-  width: calc(25% - 5px); 
-  font-family: 'PT Sans', sans-serif;
-  font-size: small;
-  color: rgba(82,82,80,255);
-  font-weight: 600;
-  opacity: 75%;
-}
-
-.language > *::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: rgba(42, 42, 40, 255);
-}
-
-.framework{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
- }
-
-.framework > * {
-  position: relative;
-  padding-left: 14px;
-  width: calc(33% - 5px); 
-  font-family: 'PT Sans', sans-serif;
-  font-size: small;
-  color: rgba(82,82,80,255);
-  font-weight: 600;
-  opacity: 75%;
-}
-
-.framework > *::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: rgba(42, 42, 40, 255);
+  text-transform: capitalize;
 }
 
 .project{
@@ -446,6 +390,23 @@
   flex-direction: column;
   gap: 10px;
   z-index: 1000;
+}
+
+/* Skills grid layout */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px 16px;
+  margin-top: 8px;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: small;
+  color: rgba(82,82,80,255);
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -608,7 +569,7 @@
     font-size: small;
     color: rgba(82,82,80,255);
     border-radius: 20px;
-    display: flex;
+    display: list;
     justify-content: start;
     align-items: start;
     text-align: start;
@@ -660,6 +621,53 @@
   
   .skilll{
     margin-bottom: 20px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .skillptt{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: 'PT Sans', sans-serif;
+    font-size: small;
+    color: rgba(82,82,80,255);
+    border-radius: 20px;
+    justify-content: start;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    word-spacing: 2px;
+    opacity: 75%;
+    gap: 8px;
+
+
+  }
+
+  .skilltxtt{
+    all: unset;
+    border-radius: 9999px;
+    width: 225px;
+    height: 20px;
+    padding: 8px, 16px;
+    text-align: center;
+    white-space: nowrap;
+    text-transform: capitalize;
+    display: inline-flex;
+    margin-bottom: 7.5px;
+    border: 1px solid rgba(117,116,147,255);
+  }
+
+  .skilldltt{
+   width: 15px;
+   aspect-ratio: 1/1;
+   cursor: pointer;
+   margin-left: 8px;
+   border-radius: 50%;
+   background: rgb(237, 41, 57, 255);
+   border: 3px solid rgb(237, 41, 57, 255);
+   margin-left: auto;
+   margin-right: 300px;
   }
   
   .projectt{
@@ -708,8 +716,8 @@
   width: 27.5px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  background: rgba(229,221,212,255);
-  border: 4px solid rgba(229,221,212,255);
+  background: rgba(237, 28, 36,255);
+  border: 4px solid rgba(237, 28, 36,255);
   display : flex;
   justify-content: center;
   align-items: center;
@@ -724,8 +732,8 @@
   width: 27.5px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  background: rgba(229,221,212,255);
-  border: 4px solid rgba(229,221,212,255);
+  background: rgba(28, 237, 36,255);
+  border: 4px solid rgba(28, 237, 36,255);
   cursor: pointer;
   display : flex;
   justify-content: center;
@@ -735,3 +743,4 @@
   margin-bottom: 15px;
   margin-left: 5px;
 }
+

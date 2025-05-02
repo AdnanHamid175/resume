@@ -5,7 +5,7 @@ import Link from "./components/Link";
 
 function App() {
   const [profileData, setProfileData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // No UI element shows when loading is true
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -28,6 +28,39 @@ function App() {
     fetchProfileData();
   }, []);
 
+  const renderSkillItems = (skillName, className) => {
+    const skillData = getProfileRow(skillName);
+    if (!skillData) return null;
+
+    try {
+      const skills = JSON.parse(skillData.data);
+      if (!Array.isArray(skills) || skills.length === 0) return null;
+
+      return (
+        <div className="skills-grid">
+          {skills.map((skill, index) => (
+            <div key={index} className="skill-item">
+              <div className="bullet"></div>
+              {skill}
+            </div>
+          ))}
+        </div>
+      );
+    } catch (error) {
+      console.error(`Error parsing ${skillName}:`, error);
+      return null;
+    }
+  };
+  // Show loading state
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  // Show error state
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
+
   const getProfileRow = (name) => {
     const element = profileData.find((item) => item.name === name);
     if (element) {
@@ -42,7 +75,7 @@ function App() {
       <div className="body">
         <div className="headshade">
           <div className="pic ">
-            <img src="..\public\logo.png" alt="pic" className="img" />
+            <img src="logo.png" alt="pic" className="img" />
           </div>
           <div className="headbar ">
             <div className="title">Adnan Hamid</div>
@@ -56,11 +89,7 @@ function App() {
               <div className="bulletin">
                 <div className="sectionheaderm">Profile</div>
                 <div className="sectionicon">
-                  <img
-                    src="../public/profile.png"
-                    alt="profile"
-                    className="img"
-                  />
+                  <img src="profile.png" alt="profile" className="img" />
                 </div>
               </div>
               <div className="para">{getProfileRow("profile")?.data}</div>
@@ -69,31 +98,31 @@ function App() {
               <div className="bulletin">
                 <div className="sectionheaderm">Skills</div>
                 <div className="sectionicon">
-                  <img src="../public/skill.png" alt="skill" className="img" />
+                  <img src="skill.png" alt="skill" className="img" />
                 </div>
               </div>
               <div className="skill">
                 <div className="subsectionheader">LANGUAGES</div>
                 <div className="para">
-                  <div className="language"></div>
+                  {renderSkillItems("languages", "language")}
                 </div>
               </div>
               <div className="skill">
                 <div className="subsectionheader">FRAMEWORKS</div>
                 <div className="para">
-                  <div className="framework"></div>
+                  {renderSkillItems("frameworks", "framework")}{" "}
                 </div>
               </div>
               <div className="skill">
                 <div className="subsectionheader">DATABASE</div>
                 <div className="para">
-                  <div className="framework"></div>
+                  {renderSkillItems("databases", "framework")}{" "}
                 </div>
               </div>
               <div className="skill">
                 <div className="subsectionheader">SOFTWARE</div>
                 <div className="para">
-                  <div className="language"></div>
+                  {renderSkillItems("software", "language")}{" "}
                 </div>
               </div>
             </div>
@@ -101,16 +130,11 @@ function App() {
               <div className="bulletin">
                 <div className="sectionheaderm">Projects</div>
                 <div className="sectionicon">
-                  <img
-                    src="../public/project.png"
-                    alt="project"
-                    className="img"
-                  />
+                  <img src="project.png" alt="project" className="img" />
                 </div>
               </div>
               <div className="project">
                 <div className="subsectionheader">
-                  {" "}
                   {getProfileRow("project1Title")?.data}
                 </div>
                 <div className="tag" style={{ width: "20%" }}>
@@ -122,38 +146,40 @@ function App() {
                 <div className="bulletin">
                   <div className="proicon">
                     <img
-                      src="../public/github.png"
+                      src="github.png"
                       alt="github"
                       className="img"
                       onClick={() =>
                         window.open(
-                          "https://github.com/AdnanHamid175",
+                          getProfileRow("project1Github")?.data || "#",
                           "_blank"
                         )
                       }
                     />
                   </div>
                   <div className="protxt">
-                    {" "}
                     {getProfileRow("project1Github")?.data}
                   </div>
                   <div className="proicon">
                     <img
-                      src="../public/wlink.png"
+                      src="wlink.png"
                       alt="resume"
                       className="img"
-                      onClick={() => window.open("www.example.com", "_blank")}
+                      onClick={() =>
+                        window.open(
+                          getProfileRow("project1Website")?.data || "#",
+                          "_blank"
+                        )
+                      }
                     />
-                  </div>{" "}
+                  </div>
                   <div className="protxt">
-                    {" "}
                     {getProfileRow("project1Website")?.data}
                   </div>
                 </div>
               </div>
               <div className="project">
                 <div className="subsectionheader">
-                  {" "}
                   {getProfileRow("project2Title")?.data}
                 </div>
                 <div className="tag" style={{ width: "20%" }}>
@@ -165,38 +191,40 @@ function App() {
                 <div className="bulletin">
                   <div className="proicon">
                     <img
-                      src="../public/github.png"
+                      src="github.png"
                       alt="github"
                       className="img"
                       onClick={() =>
                         window.open(
-                          "https://github.com/AdnanHamid175",
+                          getProfileRow("project2Github")?.data || "#",
                           "_blank"
                         )
                       }
                     />
                   </div>
                   <div className="protxt">
-                    {" "}
                     {getProfileRow("project2Github")?.data}
                   </div>
                   <div className="proicon">
                     <img
-                      src="../public/wlink.png"
+                      src="wlink.png"
                       alt="resume"
                       className="img"
-                      onClick={() => window.open("www.example.com", "_blank")}
+                      onClick={() =>
+                        window.open(
+                          getProfileRow("project2Website")?.data || "#",
+                          "_blank"
+                        )
+                      }
                     />
-                  </div>{" "}
+                  </div>
                   <div className="protxt">
-                    {" "}
                     {getProfileRow("project2Website")?.data}
                   </div>
                 </div>
               </div>
               <div className="project">
                 <div className="subsectionheader">
-                  {" "}
                   {getProfileRow("project3Title")?.data}
                 </div>
                 <div className="tag" style={{ width: "20%" }}>
@@ -208,31 +236,34 @@ function App() {
                 <div className="bulletin">
                   <div className="proicon">
                     <img
-                      src="../public/github.png"
+                      src="github.png"
                       alt="github"
                       className="img"
                       onClick={() =>
                         window.open(
-                          "https://github.com/AdnanHamid175",
+                          getProfileRow("project3Github")?.data || "#",
                           "_blank"
                         )
                       }
                     />
                   </div>
                   <div className="protxt">
-                    {" "}
                     {getProfileRow("project3Github")?.data}
                   </div>
                   <div className="proicon">
                     <img
-                      src="../public/wlink.png"
+                      src="wlink.png"
                       alt="resume"
                       className="img"
-                      onClick={() => window.open("www.example.com", "_blank")}
+                      onClick={() =>
+                        window.open(
+                          getProfileRow("project3Website")?.data || "#",
+                          "_blank"
+                        )
+                      }
                     />
-                  </div>{" "}
+                  </div>
                   <div className="protxt">
-                    {" "}
                     {getProfileRow("project3Website")?.data}
                   </div>
                 </div>
@@ -244,55 +275,43 @@ function App() {
               <div className="para">
                 <div className="bulletin">
                   <div className="icon">
-                    <img
-                      src="../public/phone.png"
-                      alt="phone"
-                      className="img"
-                    />
+                    <img src="phone.png" alt="phone" className="img" />
                   </div>
                   <div>+91 9359319388</div>
                   <Copy
                     text="+91 9359319388"
-                    copyIcon="/copy.png"
-                    checkIcon="/check.png"
+                    copyIcon="copy.png"
+                    checkIcon="check.png"
                   />
                 </div>
                 <div className="bulletin">
                   <div className="icon">
-                    <img
-                      src="../public/email.png"
-                      alt="email"
-                      className="img"
-                    />
+                    <img src="email.png" alt="email" className="img" />
                   </div>
                   <div className="mailtext">adnanyhamid786@gmail.com</div>
                   <Copy
                     text="adnanyhamid786@gmail.com"
-                    copyIcon="/copy.png"
-                    checkIcon="/check.png"
+                    copyIcon="copy.png"
+                    checkIcon="check.png"
                   />
                 </div>
                 <div className="bulletin">
                   <div className="icon">
-                    <img
-                      src="../public/address.png"
-                      https:alt="address"
-                      className="img"
-                    />
+                    <img src="address.png" alt="address" className="img" />
                   </div>
 
                   <Link link={"https://maps.app.goo.gl/32wGQdNzgg7uXA7d8"} />
                   <div>Takli Rd., Dwarka, Nashik - 422011</div>
                   <Copy
                     text="Takli Rd., Dwarka, Nashik - 422011"
-                    copyIcon="/copy.png"
-                    checkIcon="/check.png"
+                    copyIcon="copy.png"
+                    checkIcon="check.png"
                   />
                 </div>
                 <div className="bulletin">
                   <div className="icon">
                     <img
-                      src="../public/github.png"
+                      src="github.png"
                       alt="https://github.com/AdnanHamid175"
                       className="img"
                     />
@@ -302,14 +321,14 @@ function App() {
                   <div className="ellipsisText">github.com/AdnanHamid175</div>
                   <Copy
                     text="https://github.com/AdnanHamid175"
-                    copyIcon="/copy.png"
-                    checkIcon="/check.png"
+                    copyIcon="copy.png"
+                    checkIcon="check.png"
                   />
                 </div>
                 <div className="bulletin">
                   <div className="icon">
                     <img
-                      src="../public/linkedin.png"
+                      src="linkedin.png"
                       alt="https://www.linkedin.com/in/adnan-hamid-73b073325/"
                       className="img"
                     />
@@ -323,8 +342,8 @@ function App() {
                   </div>
                   <Copy
                     text="https://www.linkedin.com/in/adnan-hamid-73b073325/"
-                    copyIcon="/copy.png"
-                    checkIcon="/check.png"
+                    copyIcon="copy.png"
+                    checkIcon="check.png"
                   />
                 </div>
               </div>
@@ -333,11 +352,7 @@ function App() {
               <div className="bulletin">
                 <div className="sectionheadersb">Education</div>
                 <div className="sectionicon">
-                  <img
-                    src="../public/education.png"
-                    alt="education"
-                    className="img"
-                  />
+                  <img src="education.png" alt="education" className="img" />
                 </div>
               </div>
               <div className="education">
@@ -367,40 +382,24 @@ function App() {
               <div className="bulletin">
                 <div className="sectionheadersb">Interests</div>
                 <div className="sectionicon">
-                  <img
-                    src="../public/interest.png"
-                    alt="interest"
-                    className="img"
-                  />
+                  <img src="interest.png" alt="interest" className="img" />
                 </div>
               </div>
               <div>
                 <div className="bulletin">
                   <div className="interest">
-                    <img
-                      src="../public/soccer.png"
-                      alt="soccer"
-                      className="img"
-                    />
+                    <img src="soccer.png" alt="soccer" className="img" />
                   </div>
                   <div className="interest">
-                    <img src="../public/book.png" alt="read" className="img" />
+                    <img src="book.png" alt="read" className="img" />
                   </div>
                 </div>
                 <div className="bulletin">
                   <div className="interest">
-                    <img
-                      src="../public/cook.png"
-                      alt="cooking"
-                      className="img"
-                    />
+                    <img src="cook.png" alt="cooking" className="img" />
                   </div>
                   <div className="interest">
-                    <img
-                      src="../public/chess.png"
-                      alt="chess"
-                      className="img"
-                    />
+                    <img src="chess.png" alt="chess" className="img" />
                   </div>
                 </div>
               </div>
@@ -409,7 +408,7 @@ function App() {
               <div className="bulletin">
                 <div className="sectionheadersb">Awards</div>
                 <div className="sectionicon">
-                  <img src="../public/award.png" alt="award" className="img" />
+                  <img src="award.png" alt="award" className="img" />
                 </div>
               </div>
               <div className="subsectionheader"></div>
@@ -420,7 +419,7 @@ function App() {
       </div>
       <div className="parallax">
         <button className="print noprint" onClick={() => window.print()}>
-          <img src="../public/print.png" alt="print" className="img" />
+          <img src="print.png" alt="print" className="img" />
         </button>
         <button
           className="print noprint"
@@ -428,7 +427,7 @@ function App() {
           onClick={() =>
             (window.location.href = "http://localhost:5173/Admin")
           }>
-          <img src="../public/update.png" alt="update" className="img" />
+          <img src="update.png" alt="update" className="img" />
         </button>
       </div>
     </div>

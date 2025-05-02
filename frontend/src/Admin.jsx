@@ -9,242 +9,505 @@ function Admin() {
   const [state, setState] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [originalData, setOriginalData] = useState(null);
+
+  // Skill states
   const [languages, setLanguages] = useState([]);
+  const [frameworks, setFrameworks] = useState([]);
+  const [databases, setDatabases] = useState([]);
+  const [software, setSoftware] = useState([]);
+
+  // Edit states
+  const [editableSections, setEditableSections] = useState({
+    profile: false,
+    skills: false,
+    projects: false,
+  });
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const response = await fetch("http://localhost:5000/profile");
-        if (!response.ok) {
+        if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
-        }
         const data = await response.json();
         setState(data);
+        initializeSkillsFromData(data);
       } catch (err) {
         setError(err.message);
-        console.error("Error:", err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchProfileData();
   }, []);
 
+  const initializeSkillsFromData = (data) => {
+    const skillCategories = [
+      { name: "languages", setter: setLanguages },
+      { name: "frameworks", setter: setFrameworks },
+      { name: "databases", setter: setDatabases },
+      { name: "software", setter: setSoftware },
+    ];
+
+    skillCategories.forEach((category) => {
+      const skillData = data.find((item) => item.name === category.name);
+      if (skillData?.data) {
+        try {
+          const parsedData = JSON.parse(skillData.data);
+          category.setter(Array.isArray(parsedData) ? parsedData : []);
+        } catch (err) {
+          console.error(`Error parsing ${category.name}:`, err);
+          category.setter([]);
+        }
+      } else {
+        category.setter([]);
+      }
+    });
+  };
+
+  const toggleEdit = (section) => {
+    if (!editableSections[section]) {
+      // Store original values when entering edit mode
+      if (section === "skills") {
+        setOriginalData({
+          languages: [...languages],
+          frameworks: [...frameworks],
+          databases: [...databases],
+          software: [...software],
+        });
+      } else {
+        const sectionData = {};
+        state.forEach((item) => {
+          if (item.name.startsWith(section)) {
+            sectionData[item.name] = item.data;
+          }
+        });
+        setOriginalData(sectionData);
+      }
+    }
+    setEditableSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const handleCancel = (section) => {
+    if (originalData) {
+      if (section === "skills") {
+        setLanguages([...originalData.languages]);
+        setFrameworks([...originalData.frameworks]);
+        setDatabases([...originalData.databases]);
+        setSoftware([...originalData.software]);
+      } else {
+        const updatedState = state.map((item) => {
+          if (item.name in originalData) {
+            return { ...item, data: originalData[item.name] };
+          }
+          return item;
+        });
+        setState(updatedState);
+      }
+    }
+    setEditableSections((prev) => ({ ...prev, [section]: false }));
+  };
+
+  const handleSave = (section) => {
+    if (section === "skills") {
+      updateSkillInState("languages", languages);
+      updateSkillInState("frameworks", frameworks);
+      updateSkillInState("databases", databases);
+      updateSkillInState("software", software);
+    }
+    setEditableSections((prev) => ({ ...prev, [section]: false }));
+  };
+
   const handleChange = (e, type) => {
-    // store value as object with unique name in state array
     const { name, value } = e.target;
     const existingIndex = state.findIndex((item) => item.name === name);
-    if (existingIndex !== -1) {
-      const updatedState = [...state];
-      updatedState[existingIndex] = {
-        ...updatedState[existingIndex],
-        data: value,
-      };
-      setState(updatedState);
-    } else {
-      setState([...state, { name, data: value, type }]);
-    }
+    const updatedState =
+      existingIndex !== -1
+        ? state.map((item, i) =>
+            i === existingIndex ? { ...item, data: value } : item
+          )
+        : [...state, { name, data: value, type }];
+    setState(updatedState);
   };
 
-  const handleSubmit = () => {
-    // send state array to backend
-    fetch("http://localhost:5000/save-profile", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ dataArray: state }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+  const handleSkillChange = (
+    index,
+    value,
+    skillArray,
+    setSkillArray,
+    skillName
+  ) => {
+    const newSkills = [...skillArray];
+    newSkills[index] = value;
+    setSkillArray(newSkills);
   };
 
-  const getProfileRow = (name) => {
-    const element = state.find((item) => item.name === name);
-    if (element) {
-      return element;
-    } else {
-      return null;
-    }
+  const handleSkillAdd = (skillArray, setSkillArray, skillName) => {
+    setSkillArray([...skillArray, ""]);
   };
 
-  const handleAdd = async () => {
+  const handleSkillDelete = (index, skillArray, setSkillArray, skillName) => {
+    const newSkills = skillArray.filter((_, i) => i !== index);
+    setSkillArray(newSkills);
+  };
+
+  const updateSkillInState = (skillName, skillArray) => {
+    const existingIndex = state.findIndex((item) => item.name === skillName);
+    const updatedState =
+      existingIndex !== -1
+        ? state.map((item, i) =>
+            i === existingIndex
+              ? { ...item, data: JSON.stringify(skillArray), type: types.json }
+              : item
+          )
+        : [
+            ...state,
+            {
+              name: skillName,
+              data: JSON.stringify(skillArray),
+              type: types.json,
+            },
+          ];
+    setState(updatedState);
+  };
+
+  const handleSubmit = async () => {
     try {
-      setLanguages([...languages, ""]);
-    } catch (error) {}
+      setSubmitStatus("submitting");
+
+      const dataArray = structuredClone(state);
+
+      const skillCategories = [
+        { name: "languages", data: languages },
+        { name: "frameworks", data: frameworks },
+        { name: "databases", data: databases },
+        { name: "software", data: software },
+      ];
+
+      skillCategories.forEach(({ name, data }) => {
+        const index = dataArray.findIndex((x) => x.name === name);
+        const skillObj =
+          index >= 0 ? dataArray[index] : { name, type: types.json };
+
+        skillObj.data = JSON.stringify(data);
+
+        if (index >= 0) {
+          dataArray[index] = skillObj;
+        } else {
+          dataArray.push(skillObj);
+        }
+      });
+
+      // Send to backend
+      const response = await fetch("http://localhost:5000/save-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dataArray }),
+      });
+
+      if (!response.ok) throw new Error("Failed to save");
+
+      setSubmitStatus("success");
+      setTimeout(() => setSubmitStatus(null), 3000);
+    } catch (error) {
+      console.error("Submission error:", error);
+      setSubmitStatus("error");
+    }
   };
+
+  const getProfileRow = (name) => state.find((item) => item.name === name);
+
+  const renderSkillItems = (skillArray, setSkillArray, skillName) => {
+    return skillArray.map((skill, index) => (
+      <div key={index} className="skillptt">
+        <div className="bullet"></div>
+        {editableSections.skills ? (
+          <>
+            <input
+              type="text"
+              className="skilltxtt"
+              name={`${skillName}${index}`}
+              value={skill}
+              onChange={(e) =>
+                handleSkillChange(
+                  index,
+                  e.target.value,
+                  skillArray,
+                  setSkillArray,
+                  skillName
+                )
+              }
+            />
+            <img
+              src="delete.png"
+              alt="delete"
+              className="imgg skilldltt"
+              onClick={() =>
+                handleSkillDelete(index, skillArray, setSkillArray, skillName)
+              }
+            />
+          </>
+        ) : (
+          <div>{skill}</div>
+        )}
+      </div>
+    ));
+  };
+  if (loading) return <div className="loading">Loading profile data...</div>;
+  if (error) return <div className="error">Error loading profile: {error}</div>;
 
   return (
     <div className="App">
       <div className="bodyy">
         <div className="headshadee">
-          <div className="picc ">
-            <img src="..\public\logo.png" alt="pic" className="imgg" />
+          <div className="picc">
+            <img src="logo.png" alt="pic" className="imgg" />
           </div>
-          <div className="headbarr ">
+          <div className="headbarr">
             <div className="titlee">Adnan Hamid</div>
             <div className="subtitlee">MERN++ Stack Developer</div>
           </div>
         </div>
 
         <div className="contentt">
+          {/* PROFILE SECTION */}
           <div className="sectionn">
             <div className="bulletinn">
               <div
                 className="sectionheaderr"
-                onClick={() => console.log(state)}>
+                onClick={() => {
+                  console.log(state);
+                  console.log("languages =>", languages);
+                }}>
                 Profile
               </div>
               <div className="sectioniconn">
-                <img
-                  src="../../public/profile.png"
-                  alt="profile"
-                  className="imgg"
-                />
+                <img src="profile.png" alt="profile" className="imgg" />
               </div>
-              <div className="editiconn">
-                <img src="../../public/edit.png" alt="edit" className="imgg" />
-              </div>
+              {!editableSections.profile ? (
+                <div
+                  className="editiconn"
+                  onClick={() => toggleEdit("profile")}>
+                  <img src="edit.png" alt="edit" className="imgg" />
+                </div>
+              ) : (
+                <>
+                  <div
+                    className="cancel"
+                    onClick={() => handleCancel("profile")}>
+                    <img src="cancel.png" alt="cancel" className="imgg" />
+                  </div>
+                  <div className="done" onClick={() => handleSave("profile")}>
+                    <img src="check.png" alt="save" className="imgg" />
+                  </div>
+                </>
+              )}
             </div>
-            <textarea
-              type="text"
-              className="paraa"
-              style={{ padding: "10px" }}
-              name="profile"
-              onChange={(e) => handleChange(e, types.text)}
-              value={getProfileRow("profile")?.data}
-            />
+            {editableSections.profile ? (
+              <textarea
+                className="paraa"
+                style={{ padding: "10px" }}
+                name="profile"
+                onChange={(e) => handleChange(e, types.text)}
+                value={getProfileRow("profile")?.data || ""}
+              />
+            ) : (
+              <div className="paraa">{getProfileRow("profile")?.data}</div>
+            )}
           </div>
+
+          {/* SKILLS SECTION */}
           <div className="sectionn">
             <div className="bulletinn">
               <div className="sectionheaderr">Skills</div>
               <div className="sectioniconn">
-                <img
-                  src="../../public/skill.png"
-                  alt="skill"
-                  className="imgg"
-                />
+                <img src="skill.png" alt="skill" className="imgg" />
               </div>
-              <div className="editiconn">
-                <img src="../../public/edit.png" alt="edit" className="imgg" />
-              </div>
+              {!editableSections.skills ? (
+                <div className="editiconn" onClick={() => toggleEdit("skills")}>
+                  <img src="edit.png" alt="edit" className="imgg" />
+                </div>
+              ) : (
+                <>
+                  <div
+                    className="cancel"
+                    onClick={() => handleCancel("skills")}>
+                    <img src="cancel.png" alt="cancel" className="imgg" />
+                  </div>
+                  <div className="done" onClick={() => handleSave("skills")}>
+                    <img src="check.png" alt="save" className="imgg" />
+                  </div>
+                </>
+              )}
             </div>
+
+            {/* Languages */}
             <div className="skilll">
               <div className="bulletinn">
                 <div className="subsectionheaderr">LANGUAGES</div>
-                <div className="iconn">
-                  <img
-                    src="../../public/add.png"
-                    alt="add"
-                    className="imgg"
-                    onClick={handleAdd}
-                  />
-                </div>
+                {editableSections.skills && (
+                  <div className="iconn">
+                    <img
+                      src="add.png"
+                      alt="add"
+                      className="imgg"
+                      onClick={() =>
+                        handleSkillAdd(languages, setLanguages, "languages")
+                      }
+                    />
+                  </div>
+                )}
               </div>
               <div className="paraa">
-                {languages.map((lang, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    style={{ all: "unset" }}
-                    name={`language${index}`}
-                    value={lang}
-                    onChange={(e) => {
-                      const newLangs = [...languages];
-                      newLangs[index] = e.target.value;
-                      setLanguages(newLangs);
-                    }}
-                  />
-                ))}
+                {renderSkillItems(languages, setLanguages, "languages")}
               </div>
             </div>
+
+            {/* Frameworks */}
             <div className="skilll">
               <div className="bulletinn">
                 <div className="subsectionheaderr">FRAMEWORKS</div>
-                <div className="iconn">
-                  <img src="../../public/add.png" alt="add" className="imgg" />
-                </div>
+                {editableSections.skills && (
+                  <div className="iconn">
+                    <img
+                      src="add.png"
+                      alt="add"
+                      className="imgg"
+                      onClick={() =>
+                        handleSkillAdd(frameworks, setFrameworks, "frameworks")
+                      }
+                    />
+                  </div>
+                )}
               </div>
               <div className="paraa">
-                <div></div>
+                {renderSkillItems(frameworks, setFrameworks, "frameworks")}
               </div>
             </div>
+
+            {/* Databases */}
             <div className="skilll">
               <div className="bulletinn">
                 <div className="subsectionheaderr">DATABASE</div>
-                <div className="iconn">
-                  <img src="../../public/add.png" alt="add" className="imgg" />
-                </div>
+                {editableSections.skills && (
+                  <div className="iconn">
+                    <img
+                      src="add.png"
+                      alt="add"
+                      className="imgg"
+                      onClick={() =>
+                        handleSkillAdd(databases, setDatabases, "databases")
+                      }
+                    />
+                  </div>
+                )}
               </div>
               <div className="paraa">
-                <div></div>
+                {renderSkillItems(databases, setDatabases, "databases")}
               </div>
             </div>
+
+            {/* Software */}
             <div className="skilll">
               <div className="bulletinn">
                 <div className="subsectionheaderr">SOFTWARE</div>
-                <div className="iconn">
-                  <img src="../../public/add.png" alt="add" className="imgg" />
-                </div>
+                {editableSections.skills && (
+                  <div className="iconn">
+                    <img
+                      src="add.png"
+                      alt="add"
+                      className="imgg"
+                      onClick={() =>
+                        handleSkillAdd(software, setSoftware, "software")
+                      }
+                    />
+                  </div>
+                )}
               </div>
               <div className="paraa">
-                <div></div>
+                {renderSkillItems(software, setSoftware, "software")}
               </div>
             </div>
           </div>
+
+          {/* PROJECTS SECTION */}
           <div className="sectionn">
             <div className="bulletinn">
               <div className="sectionheaderr">Projects</div>
               <div className="sectioniconn">
-                <img
-                  src="../../public/project.png"
-                  alt="project"
-                  className="imgg"
-                />
+                <img src="project.png" alt="project" className="imgg" />
               </div>
-              <div className="editiconn">
-                <img src="../../public/edit.png" alt="edit" className="imgg" />
-              </div>
+              {!editableSections.projects ? (
+                <div
+                  className="editiconn"
+                  onClick={() => toggleEdit("projects")}>
+                  <img src="edit.png" alt="edit" className="imgg" />
+                </div>
+              ) : (
+                <>
+                  <div
+                    className="cancel"
+                    onClick={() => handleCancel("projects")}>
+                    <img src="cancel.png" alt="cancel" className="imgg" />
+                  </div>
+                  <div className="done" onClick={() => handleSave("projects")}>
+                    <img src="check.png" alt="save" className="imgg" />
+                  </div>
+                </>
+              )}
             </div>
+
             <div className="projectt">
-              <div className="subsectionheaderr">
-                <input
-                  type="text"
-                  style={{ all: "unset" }}
-                  name="project1Title"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project1Title")?.data}
-                />
-              </div>
-              <div className="tagg" style={{ width: "20%" }}>
-                <input
-                  type="text"
-                  style={{ all: "unset" }}
-                  name="project1Field"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project1Field")?.data}
-                />
-              </div>
-              <div className="paraa">
-                <textarea
-                  type="text"
-                  className="paraa"
-                  style={{ padding: "10px", marginBottom: "10px" }}
-                  name="project1Description"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project1Description")?.data}
-                />
-              </div>
+              {editableSections.projects ? (
+                <>
+                  <input
+                    type="text"
+                    className="subsectionheaderr"
+                    style={{ all: "unset", width: "100%" }}
+                    name="project1Title"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project1Title")?.data || ""}
+                  />
+                  <input
+                    type="text"
+                    className="tagg"
+                    style={{ all: "unset", width: "20%", padding: "8px 16px" }}
+                    name="project1Field"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project1Field")?.data || ""}
+                  />
+                  <textarea
+                    className="paraa"
+                    style={{
+                      padding: "10px",
+                      marginBottom: "10px",
+                      width: "100%",
+                    }}
+                    name="project1Description"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project1Description")?.data || ""}
+                  />
+                </>
+              ) : (
+                <>
+                  <div className="subsectionheaderr">
+                    {getProfileRow("project1Title")?.data}
+                  </div>
+                  <div className="tagg" style={{ width: "20%" }}>
+                    {getProfileRow("project1Field")?.data}
+                  </div>
+                  <div className="paraa">
+                    {getProfileRow("project1Description")?.data}
+                  </div>
+                </>
+              )}
+
               <div className="bulletinn">
                 <div className="proiconn">
                   <img
-                    src="../../public/github.png"
+                    src="github.png"
                     alt="github"
                     className="imgg"
                     onClick={() =>
@@ -252,69 +515,93 @@ function Admin() {
                     }
                   />
                 </div>
-                <div className="protxtt">
-                  {" "}
+                {editableSections.projects ? (
                   <input
                     type="text"
+                    className="protxtt"
                     style={{ all: "unset" }}
                     name="project1Github"
                     onChange={(e) => handleChange(e, types.text)}
-                    value={getProfileRow("project1Github")?.data}
+                    value={getProfileRow("project1Github")?.data || ""}
                   />
-                </div>
+                ) : (
+                  <div className="protxtt">
+                    {getProfileRow("project1Github")?.data}
+                  </div>
+                )}
                 <div className="proiconn">
                   <img
-                    src="../../public/wlink.png"
+                    src="wlink.png"
                     alt="resume"
                     className="imgg"
                     onClick={() => window.open("www.example.com", "_blank")}
                   />
-                </div>{" "}
-                <div className="protxtt">
-                  {" "}
+                </div>
+                {editableSections.projects ? (
                   <input
                     type="text"
+                    className="protxtt"
                     style={{ all: "unset" }}
                     name="project1Website"
                     onChange={(e) => handleChange(e, types.text)}
-                    value={getProfileRow("project1Website")?.data}
+                    value={getProfileRow("project1Website")?.data || ""}
                   />
-                </div>
+                ) : (
+                  <div className="protxtt">
+                    {getProfileRow("project1Website")?.data}
+                  </div>
+                )}
               </div>
             </div>
             <div className="projectt">
-              <div className="subsectionheaderr">
-                <input
-                  type="text"
-                  style={{ all: "unset" }}
-                  name="project2Title"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project2Title")?.data}
-                />
-              </div>
-              <div className="tagg" style={{ width: "20%" }}>
-                <input
-                  type="text"
-                  style={{ all: "unset" }}
-                  name="project2Field"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project2Field")?.data}
-                />
-              </div>
-              <div className="paraa">
-                <textarea
-                  type="text"
-                  className="paraa"
-                  style={{ padding: "10px", marginBottom: "10px" }}
-                  name="project2Description"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project2Description")?.data}
-                />
-              </div>
+              {editableSections.projects ? (
+                <>
+                  <input
+                    type="text"
+                    className="subsectionheaderr"
+                    style={{ all: "unset", width: "100%" }}
+                    name="project2Title"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project2Title")?.data || ""}
+                  />
+                  <input
+                    type="text"
+                    className="tagg"
+                    style={{ all: "unset", width: "20%", padding: "8px 16px" }}
+                    name="project2Field"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project2Field")?.data || ""}
+                  />
+                  <textarea
+                    className="paraa"
+                    style={{
+                      padding: "10px",
+                      marginBottom: "10px",
+                      width: "100%",
+                    }}
+                    name="project2Description"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project2Description")?.data || ""}
+                  />
+                </>
+              ) : (
+                <>
+                  <div className="subsectionheaderr">
+                    {getProfileRow("project2Title")?.data}
+                  </div>
+                  <div className="tagg" style={{ width: "20%" }}>
+                    {getProfileRow("project2Field")?.data}
+                  </div>
+                  <div className="paraa">
+                    {getProfileRow("project2Description")?.data}
+                  </div>
+                </>
+              )}
+
               <div className="bulletinn">
                 <div className="proiconn">
                   <img
-                    src="../../public/github.png"
+                    src="github.png"
                     alt="github"
                     className="imgg"
                     onClick={() =>
@@ -322,69 +609,93 @@ function Admin() {
                     }
                   />
                 </div>
-                <div className="protxtt">
-                  {" "}
+                {editableSections.projects ? (
                   <input
                     type="text"
+                    className="protxtt"
                     style={{ all: "unset" }}
                     name="project2Github"
                     onChange={(e) => handleChange(e, types.text)}
-                    value={getProfileRow("project2Github")?.data}
+                    value={getProfileRow("project2Github")?.data || ""}
                   />
-                </div>
+                ) : (
+                  <div className="protxtt">
+                    {getProfileRow("project2Github")?.data}
+                  </div>
+                )}
                 <div className="proiconn">
                   <img
-                    src="../../public/wlink.png"
+                    src="wlink.png"
                     alt="resume"
                     className="imgg"
                     onClick={() => window.open("www.example.com", "_blank")}
                   />
-                </div>{" "}
-                <div className="protxtt">
-                  {" "}
+                </div>
+                {editableSections.projects ? (
                   <input
                     type="text"
+                    className="protxtt"
                     style={{ all: "unset" }}
                     name="project2Website"
                     onChange={(e) => handleChange(e, types.text)}
-                    value={getProfileRow("project2Website")?.data}
+                    value={getProfileRow("project2Website")?.data || ""}
                   />
-                </div>
+                ) : (
+                  <div className="protxtt">
+                    {getProfileRow("project2Website")?.data}
+                  </div>
+                )}
               </div>
             </div>
             <div className="projectt">
-              <div className="subsectionheaderr">
-                <input
-                  type="text"
-                  style={{ all: "unset" }}
-                  name="project3Title"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project3Title")?.data}
-                />
-              </div>
-              <div className="tagg" style={{ width: "20%" }}>
-                <input
-                  type="text"
-                  style={{ all: "unset" }}
-                  name="project3Field"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project3Field")?.data}
-                />
-              </div>
-              <div className="paraa">
-                <textarea
-                  type="text"
-                  className="paraa"
-                  style={{ padding: "10px", marginBottom: "10px" }}
-                  name="project3Description"
-                  onChange={(e) => handleChange(e, types.text)}
-                  value={getProfileRow("project3Description")?.data}
-                />
-              </div>
-              <div className="bulletinn">
+              {editableSections.projects ? (
+                <>
+                  <input
+                    type="text"
+                    className="subsectionheaderr"
+                    style={{ all: "unset", width: "100%" }}
+                    name="project3Title"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project3Title")?.data || ""}
+                  />
+                  <input
+                    type="text"
+                    className="tagg"
+                    style={{ all: "unset", width: "20%", padding: "8px 16px" }}
+                    name="project3Field"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project3Field")?.data || ""}
+                  />
+                  <textarea
+                    className="paraa"
+                    style={{
+                      padding: "10px",
+                      marginBottom: "10px",
+                      width: "100%",
+                    }}
+                    name="project3Description"
+                    onChange={(e) => handleChange(e, types.text)}
+                    value={getProfileRow("project3Description")?.data || ""}
+                  />
+                </>
+              ) : (
+                <>
+                  <div className="subsectionheaderr">
+                    {getProfileRow("project3Title")?.data}
+                  </div>
+                  <div className="tagg" style={{ width: "20%" }}>
+                    {getProfileRow("project3Field")?.data}
+                  </div>
+                  <div className="paraa">
+                    {getProfileRow("project3Description")?.data}
+                  </div>
+                </>
+              )}
+
+              <div className="bulletinn" style={{ paddingBottom: "20px" }}>
                 <div className="proiconn">
                   <img
-                    src="../../public/github.png"
+                    src="github.png"
                     alt="github"
                     className="imgg"
                     onClick={() =>
@@ -392,43 +703,60 @@ function Admin() {
                     }
                   />
                 </div>
-                <div className="protxtt">
-                  {" "}
+                {editableSections.projects ? (
                   <input
                     type="text"
+                    className="protxtt"
                     style={{ all: "unset" }}
                     name="project3Github"
                     onChange={(e) => handleChange(e, types.text)}
-                    value={getProfileRow("project3Github")?.data}
+                    value={getProfileRow("project3Github")?.data || ""}
                   />
-                </div>
+                ) : (
+                  <div className="protxtt">
+                    {getProfileRow("project3Github")?.data}
+                  </div>
+                )}
                 <div className="proiconn">
                   <img
-                    src="../../public/wlink.png"
+                    src="wlink.png"
                     alt="resume"
                     className="imgg"
                     onClick={() => window.open("www.example.com", "_blank")}
                   />
-                </div>{" "}
-                <div className="protxtt">
-                  {" "}
+                </div>
+                {editableSections.projects ? (
                   <input
                     type="text"
+                    className="protxtt"
                     style={{ all: "unset" }}
                     name="project3Website"
                     onChange={(e) => handleChange(e, types.text)}
-                    value={getProfileRow("project3Website")?.data}
+                    value={getProfileRow("project3Website")?.data || ""}
                   />
-                </div>
+                ) : (
+                  <div className="protxtt">
+                    {getProfileRow("project3Website")?.data}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="parallax">
-        <button className="print" onClick={handleSubmit}>
-          <img src="../public/submit.png" alt="print" className="img" />
+        <button
+          className="print"
+          onClick={handleSubmit}
+          disabled={submitStatus === "submitting"}>
+          <img src="submit.png" alt="submit" className="img" />
         </button>
+        {submitStatus === "success" && (
+          <div className="save-success">Saved successfully!</div>
+        )}
+        {submitStatus === "error" && (
+          <div className="save-error">Error saving changes</div>
+        )}
       </div>
     </div>
   );
