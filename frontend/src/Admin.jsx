@@ -465,7 +465,6 @@ function Admin() {
                   <input
                     type="text"
                     className="subsectionheaderr"
-                    style={{ all: "unset", width: "100%" }}
                     name="project1Title"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project1Title")?.data || ""}
@@ -473,18 +472,12 @@ function Admin() {
                   <input
                     type="text"
                     className="tagg"
-                    style={{ all: "unset", width: "20%", padding: "8px 16px" }}
                     name="project1Field"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project1Field")?.data || ""}
                   />
                   <textarea
                     className="paraa"
-                    style={{
-                      padding: "10px",
-                      marginBottom: "10px",
-                      width: "100%",
-                    }}
                     name="project1Description"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project1Description")?.data || ""}
@@ -504,14 +497,17 @@ function Admin() {
                 </>
               )}
 
-              <div className="bulletinn">
+              <div className="bulletinn" style={{ gap: "5px" }}>
                 <div className="proiconn">
                   <img
                     src="github.png"
                     alt="github"
                     className="imgg"
                     onClick={() =>
-                      window.open("https://github.com/AdnanHamid175", "_blank")
+                      window.open(
+                        getProfileRow("project1Github")?.data || "#",
+                        "_blank"
+                      )
                     }
                   />
                 </div>
@@ -519,7 +515,15 @@ function Admin() {
                   <input
                     type="text"
                     className="protxtt"
-                    style={{ all: "unset" }}
+                    style={{
+                      all: "unset",
+                      border: "1px solid black",
+                      borderRadius: "9999px",
+                      justifyContent: "center",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                     name="project1Github"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project1Github")?.data || ""}
@@ -534,14 +538,27 @@ function Admin() {
                     src="wlink.png"
                     alt="resume"
                     className="imgg"
-                    onClick={() => window.open("www.example.com", "_blank")}
+                    onClick={() =>
+                      window.open(
+                        getProfileRow("project1Website")?.data || "#",
+                        "_blank"
+                      )
+                    }
                   />
                 </div>
                 {editableSections.projects ? (
                   <input
                     type="text"
                     className="protxtt"
-                    style={{ all: "unset" }}
+                    style={{
+                      all: "unset",
+                      border: "1px solid black",
+                      borderRadius: "9999px",
+                      justifyContent: "center",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                     name="project1Website"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project1Website")?.data || ""}
@@ -559,7 +576,6 @@ function Admin() {
                   <input
                     type="text"
                     className="subsectionheaderr"
-                    style={{ all: "unset", width: "100%" }}
                     name="project2Title"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project2Title")?.data || ""}
@@ -567,18 +583,12 @@ function Admin() {
                   <input
                     type="text"
                     className="tagg"
-                    style={{ all: "unset", width: "20%", padding: "8px 16px" }}
                     name="project2Field"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project2Field")?.data || ""}
                   />
                   <textarea
                     className="paraa"
-                    style={{
-                      padding: "10px",
-                      marginBottom: "10px",
-                      width: "100%",
-                    }}
                     name="project2Description"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project2Description")?.data || ""}
@@ -598,14 +608,17 @@ function Admin() {
                 </>
               )}
 
-              <div className="bulletinn">
+              <div className="bulletinn" style={{ gap: "5px" }}>
                 <div className="proiconn">
                   <img
                     src="github.png"
                     alt="github"
                     className="imgg"
                     onClick={() =>
-                      window.open("https://github.com/AdnanHamid175", "_blank")
+                      window.open(
+                        getProfileRow("project2Github")?.data || "#",
+                        "_blank"
+                      )
                     }
                   />
                 </div>
@@ -613,7 +626,15 @@ function Admin() {
                   <input
                     type="text"
                     className="protxtt"
-                    style={{ all: "unset" }}
+                    style={{
+                      all: "unset",
+                      border: "1px solid black",
+                      borderRadius: "9999px",
+                      justifyContent: "center",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                     name="project2Github"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project2Github")?.data || ""}
@@ -628,14 +649,27 @@ function Admin() {
                     src="wlink.png"
                     alt="resume"
                     className="imgg"
-                    onClick={() => window.open("www.example.com", "_blank")}
+                    onClick={() =>
+                      window.open(
+                        getProfileRow("project2Website")?.data || "#",
+                        "_blank"
+                      )
+                    }
                   />
                 </div>
                 {editableSections.projects ? (
                   <input
                     type="text"
                     className="protxtt"
-                    style={{ all: "unset" }}
+                    style={{
+                      all: "unset",
+                      border: "1px solid black",
+                      borderRadius: "9999px",
+                      justifyContent: "center",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                     name="project2Website"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project2Website")?.data || ""}
@@ -653,7 +687,6 @@ function Admin() {
                   <input
                     type="text"
                     className="subsectionheaderr"
-                    style={{ all: "unset", width: "100%" }}
                     name="project3Title"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project3Title")?.data || ""}
@@ -661,18 +694,12 @@ function Admin() {
                   <input
                     type="text"
                     className="tagg"
-                    style={{ all: "unset", width: "20%", padding: "8px 16px" }}
                     name="project3Field"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project3Field")?.data || ""}
                   />
                   <textarea
                     className="paraa"
-                    style={{
-                      padding: "10px",
-                      marginBottom: "10px",
-                      width: "100%",
-                    }}
                     name="project3Description"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project3Description")?.data || ""}
@@ -692,14 +719,19 @@ function Admin() {
                 </>
               )}
 
-              <div className="bulletinn" style={{ paddingBottom: "20px" }}>
+              <div
+                className="bulletinn"
+                style={{ paddingBottom: "20px", gap: "5px" }}>
                 <div className="proiconn">
                   <img
                     src="github.png"
                     alt="github"
                     className="imgg"
                     onClick={() =>
-                      window.open("https://github.com/AdnanHamid175", "_blank")
+                      window.open(
+                        getProfileRow("project3Github")?.data || "#",
+                        "_blank"
+                      )
                     }
                   />
                 </div>
@@ -707,7 +739,15 @@ function Admin() {
                   <input
                     type="text"
                     className="protxtt"
-                    style={{ all: "unset" }}
+                    style={{
+                      all: "unset",
+                      border: "1px solid black",
+                      borderRadius: "9999px",
+                      justifyContent: "center",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                     name="project3Github"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project3Github")?.data || ""}
@@ -722,14 +762,27 @@ function Admin() {
                     src="wlink.png"
                     alt="resume"
                     className="imgg"
-                    onClick={() => window.open("www.example.com", "_blank")}
+                    onClick={() =>
+                      window.open(
+                        getProfileRow("project3Website")?.data || "#",
+                        "_blank"
+                      )
+                    }
                   />
                 </div>
                 {editableSections.projects ? (
                   <input
                     type="text"
                     className="protxtt"
-                    style={{ all: "unset" }}
+                    style={{
+                      all: "unset",
+                      border: "1px solid black",
+                      borderRadius: "9999px",
+                      justifyContent: "center",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                     name="project3Website"
                     onChange={(e) => handleChange(e, types.text)}
                     value={getProfileRow("project3Website")?.data || ""}
@@ -757,6 +810,12 @@ function Admin() {
         {submitStatus === "error" && (
           <div className="save-error">Error saving changes</div>
         )}
+        <button
+          className="print noprint"
+          style={{ marginTop: "10px" }}
+          onClick={() => (window.location.href = "http://localhost:5173/")}>
+          <img src="app.png" alt="update" className="img" />
+        </button>
       </div>
     </div>
   );
